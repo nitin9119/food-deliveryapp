@@ -1,0 +1,27 @@
+#navbar{
+    display: flex;
+    padding-left: 20px;    
+    border: 1px solid black;
+}
+#option{
+    margin-left: 70%;
+    display: flex;
+    text-align: right;
+}
+#option>h3{
+    margin:20px 10px 10px 10px;
+}
+img{
+    width:150px;
+    height: 180px;
+}
+#cont{
+    margin:auto;
+    padding: 10px;
+}
+#login{
+    width: 200px;
+}
+#signup{
+    width:100px;
+}

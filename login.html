@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login page</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+
+    <div id="navbar"></div> 
+    <h2>Login</h2>
+    <div id="login">
+        <form onsubmit="Login(event)" id="login-form">
+            <input type="text" id="user" placeholder="username"/>
+            <input type="password" id="pass" placeholder="password" />
+            <input type="submit"/>
+        </form>
+    </div>
+    
+</body>
+</html>
+<script type="module">
+
+import navbar from "./components/navbar.js"
+let nav_div = document.getElementById("navbar");
+nav_div.innerHTML=navbar();
+
+
+    function Login(e){
+        e.preventDefault();
+        let form = document.getElementById("login-form");
+        let userdata = {
+            username:form.user.value,
+            password:form.pass.value,
+        };
+
+        let data_sent = JSON.stringify(userdata);
+        console.log("datasent",data_sent);
+        fetch("https://masai-api-mocker.herokuapp.com/auth/login" ,{
+            method:"POST",
+            body:data_sent,
+            headers:{
+                "Content-type":"application/json",
+            },
+        })
+        .then((res) =>{
+            return res.json();
+        })
+        .then((res)=>{
+            console.log('res :>> ', res);
+            fetchData(userdata.email,res.token);
+        })
+        .catch((err)=>{
+            console.log('err :>> ', err);
+        });
+    }
+
+
+    function fetchData(username, token){
+        fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`,{
+            headers:{
+                "Content-type" : "application/json",
+                Authorization : `Bearer ${token}`,
+            },
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((res)=>{
+            console.log('res :>> ', res);
+        })
+        .catch((err)=>{
+            console.log('err :>> ', err);
+        })
+    }
+</script>

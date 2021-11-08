@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <div id="navbar"></div>    
+    <div id="cont"></div>
+</body>
+</html>
+
+<script type="module">
+    
+
+    let container= document.getElementById("cont");
+
+import navbar from "./components/navbar.js"
+let nav_div = document.getElementById("navbar");
+nav_div.innerHTML=navbar();
+
+menu();
+
+async function menu(){   
+        
+    let result = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
+    var data = await result.json();
+    console.log('data :>> ', data);
+
+
+    let div = document.createElement("div");
+    let p = document.createElement("p");
+    p.innerText=data.meals[0].strMeal;
+
+    var product=data.meals[0].strMeal;
+    let desc = document.createElement("p");
+    desc.innerText=data.meals[0].strInstructions;
+
+   // let product=data.meals[0].strMeal;
+    let img = document.createElement("img");
+    img.src=data.meals[0].strMealThumb;
+
+    let addtocartbtn=document.createElement("button");
+    addtocartbtn.innerText="Add to cart";   
+    addtocartbtn.onclick=function (){
+        addcart(product)
+    }
+
+    
+    //addtocartbtn.setAttribute("click")
+    div.append(img,p,addtocartbtn,desc);
+    container.append(div);
+    
+
+}
+
+if(localStorage.getItem(("Cart") === null)){
+localStorage.setItem(("Cart"),JSON.stringify([]));
+}
+
+function addcart(prodname){
+let product_cart = JSON.parse(localStorage.getItem("Cart"));
+
+
+product_cart.push("ranam");
+localStorage.setItem(("Cart"),JSON.stringify(product_cart));
+
+console.log('product_cart :>> ', product_cart);
+}
+
+
+</script>
